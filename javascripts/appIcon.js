@@ -92,8 +92,6 @@ function mackIosIcon(imgUrl){
 
         img.src = imgUrl;
 
-	roundRect(10, 10, 100, 100, 20,img);
-	// test2(img);
 
 
 	function getImgDataURL (size,url){
