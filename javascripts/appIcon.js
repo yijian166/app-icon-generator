@@ -9,7 +9,8 @@ dragBox.addEventListener('dragleave',handleDragLeave,false);
 
 var radiusRange = document.getElementById('radiusRange'),
 	radiusNum = document.getElementById('radiusNum'),
-	radiusShow = document.getElementById('radiusShow');
+	radiusShow = document.getElementById('radiusShow'),
+	radiusShowOriginURL = window.location.href.slice( 0, window.location.href.indexOf('/#'))+ radiusShow.getAttribute('data-src');
 
 radiusRange.addEventListener('change',changeRadius,false);
 radiusNum.addEventListener('change',changeRadius,false);
@@ -18,7 +19,8 @@ radiusNum.addEventListener('change',changeRadius,false);
 init();
 
 function init(){
-	radiusShow.src =  radiusShow.getAttribute('data-src');
+	console.log(radiusShowOriginURL);
+	radiusShow.src = radiusShowOriginURL;
 	radiusShow.onload = function(){
 		showRoundRectImg();
 	}
@@ -38,7 +40,7 @@ function changeRadius(e){
 }
 function showRoundRectImg(radius){
 	var radius = radius ? radius : radiusRange.value;
-	var url = radiusShow.getAttribute('data-src');
+	var url = radiusShowOriginURL;
 	var showImgURL = getRoundRectImgDataURL(1000,radius,url);
 	radiusShow.src = showImgURL;
 }
