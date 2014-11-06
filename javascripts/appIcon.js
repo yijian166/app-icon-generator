@@ -1,6 +1,11 @@
-var dragBox = document.getElementById('dragBox');
-
 var appIconURL = '';
+var icons = [];
+var dragBox = document.getElementById('dragBox');
+var siteUrl = window.location.href.slice( 0, window.location.href.indexOf('/#'));
+
+// zip.workerScriptsPath = siteUrl + "/javascripts/lib/";
+
+
 dragBox.addEventListener('dragenter',handleDragEnter,false);
 dragBox.addEventListener('dragover',handleDragOver,false);
 dragBox.addEventListener('drop',handleFileSelect,false);
@@ -10,7 +15,8 @@ dragBox.addEventListener('dragleave',handleDragLeave,false);
 var radiusRange = document.getElementById('radiusRange'),
 	radiusNum = document.getElementById('radiusNum'),
 	radiusShow = document.getElementById('radiusShow'),
-	radiusShowOriginURL = window.location.href.slice( 0, window.location.href.indexOf('/#'))+ radiusShow.getAttribute('data-src');
+	radiusShowOriginURL = siteUrl + radiusShow.getAttribute('data-src');
+
 
 radiusRange.addEventListener('change',changeRadius,false);
 radiusNum.addEventListener('change',changeRadius,false);
@@ -19,7 +25,6 @@ radiusNum.addEventListener('change',changeRadius,false);
 init();
 
 function init(){
-	console.log(radiusShowOriginURL);
 	radiusShow.src = radiusShowOriginURL;
 	radiusShow.onload = function(){
 		showRoundRectImg();
@@ -87,10 +92,8 @@ function handleDragOver(evt) {
 
                    // img.src = e.target.result;
                    var img = '<img src="' + e.target.result + '">';
-                   console.log(e);
 
                    dragBox.innerHTML = img;
-                   console.log(img);
                    appIconURL = e.target.result;
                    mackIosIcon(appIconURL);
                    mackAndroidIcon(appIconURL);
@@ -113,14 +116,18 @@ function mackIosIcon(imgUrl){
 	var sizeList = [29,58,87,80,57,114,120,180,512,1024],
 		htmlLi = '';
 	for(var i = 0,len = sizeList.length;i<len;i++){
+		var url = getImgDataURL(sizeList[i],imgUrl);
 
 		htmlLi 	+= '<li>'
 				 + '<img src="'
-				 + getImgDataURL(sizeList[i],imgUrl)
+				 + url
 				 + '" >'
 				 + '</li>';
 
-
+		icons.push({
+			name:'iosICon' + sizeList[i] + '.png',
+			imgData:url
+		});
 	};
 	document.getElementById('iosIconList').innerHTML = htmlLi;
 
@@ -151,13 +158,18 @@ function mackAndroidIcon(imgUrl){
 
 	var originImgDAtaURL = getRoundRectImgDataURL(1000,radiusRange.value,imgUrl);
 	for(var i = 0,len = sizeList.length;i<len;i++){
+		var url = getImgDataURL(sizeList[i],originImgDAtaURL)
 
 		htmlLi 	+= '<li>'
 				 + '<img src="'
-				 + getImgDataURL(sizeList[i],originImgDAtaURL)
+				 + url
 				 + '" >'
 				 + '</li>';
 
+		icons.push({
+			name:'androidICon' + sizeList[i] + '.png',
+			imgData:url
+		});
 
 	};
 	document.getElementById('androidIconList').innerHTML = htmlLi;
@@ -175,8 +187,6 @@ function mackAndroidIcon(imgUrl){
 		iconCanvasCtx.drawImage(img,0,0,size,size);
 		return iconCanvas.toDataURL();
 	}
-
-
 }
 
 function getRoundRectImgDataURL (size,radius,url){
@@ -224,10 +234,50 @@ function getRoundRectImgDataURL (size,radius,url){
 		})(iconCanvas,0,0,size,size,radius,img);
 	}
 
+var dl  = document.getElementById('dl');
+dl.addEventListener('click',function(){
+	var zip = new JSZip();
+	var ios = zip.folder("ios");
+	var android = zip.folder("android");
+	for(var i = 0,len = icons.length;i<len;i++){
+		var imgBase64Data = getBase64Data(icons[i].imgData);
+		var name = icons[i].name;
+		if(name.match('ios')){
+			ios.file(icons[i].name, imgBase64Data, {base64: true});
+		}else {
+			android.file(icons[i].name, imgBase64Data, {base64: true});
+		}
+	}
+	var content = zip.generate({type:"blob"});
+	// see FileSaver.js
+	saveAs(content, "icons.zip");
+
+},false);
+
+function getBase64Data(imgData){
+	return imgData.slice(22,-1);
+}
 
 
-// var testCtx = document.getElementById('test').getContext("2d");
+function dataURItoBlob(dataURI) {
+    // convert base64/URLEncoded data component to raw binary data held in a string
+    var byteString;
+    if (dataURI.split(',')[0].indexOf('base64') >= 0)
+        byteString = atob(dataURI.split(',')[1]);
+    else
+        byteString = unescape(dataURI.split(',')[1]);
 
+    // separate out the mime component
+    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+    // write the bytes of the string to a typed array
+    var ia = new Uint8Array(byteString.length);
+    for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+
+    return new Blob([ia], {type:mimeString});
+}
 
 
 
