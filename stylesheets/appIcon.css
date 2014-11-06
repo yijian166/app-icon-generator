@@ -1,1 +1,18 @@
-.drag-box{width:200px;height:200px;background-color:#fafafa}.drag-box img{max-width:100%;max-height:100%}ul img{max-width:300px}
+.drag-box {
+  width: 300px;
+  height: 300px;
+  margin: 20px auto;
+  background-color: #fafafa;
+  overflow: hidden;
+}
+.drag-box p {
+  margin-top: 120px;
+  text-align: center;
+}
+.drag-box img {
+  max-width: 100%;
+  max-height: 100%;
+}
+ul img {
+  max-width: 300px;
+}
