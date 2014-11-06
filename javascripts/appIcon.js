@@ -1,13 +1,47 @@
 var dragBox = document.getElementById('dragBox');
 
-
-
-
+var appIconURL = '';
 dragBox.addEventListener('dragenter',handleDragEnter,false);
 dragBox.addEventListener('dragover',handleDragOver,false);
 dragBox.addEventListener('drop',handleFileSelect,false);
 dragBox.addEventListener('dragleave',handleDragLeave,false);
 
+
+var radiusRange = document.getElementById('radiusRange'),
+	radiusNum = document.getElementById('radiusNum'),
+	radiusShow = document.getElementById('radiusShow');
+
+radiusRange.addEventListener('change',changeRadius,false);
+radiusNum.addEventListener('change',changeRadius,false);
+
+//初始化
+init();
+
+function init(){
+	radiusShow.src =  radiusShow.getAttribute('data-src');
+	radiusShow.onload = function(){
+		showRoundRectImg();
+	}
+}
+
+
+function changeRadius(e){
+	//同步range 和输入框的值
+    if(this.id === 'radiusRange'){
+    	radiusNum.value = this.value / 100;
+    }else {
+    	radiusRange.value = this.value  * 100;
+    }
+    showRoundRectImg(radiusRange.value);
+    if(appIconURL ==='')return;
+    mackAndroidIcon(appIconURL);
+}
+function showRoundRectImg(radius){
+	var radius = radius ? radius : radiusRange.value;
+	var url = radiusShow.getAttribute('data-src');
+	var showImgURL = getRoundRectImgDataURL(1000,radius,url);
+	radiusShow.src = showImgURL;
+}
 // 处理插入拖出效果
 function handleDragEnter(evt){ this.setAttribute('style', 'border-style:dashed;'); }
 function handleDragLeave(evt){ this.setAttribute('style', ''); }
@@ -55,9 +89,9 @@ function handleDragOver(evt) {
 
                    dragBox.innerHTML = img;
                    console.log(img);
-
-                   mackIosIcon(e.target.result);
-                   mackAndroidIcon(e.target.result);
+                   appIconURL = e.target.result;
+                   mackIosIcon(appIconURL);
+                   mackAndroidIcon(appIconURL);
 
 
                };
@@ -113,7 +147,7 @@ function mackAndroidIcon(imgUrl){
 	var sizeList = [48,72,96,144],
 		htmlLi = '';
 
-	var originImgDAtaURL = getOriginImgDataURL(895,imgUrl);
+	var originImgDAtaURL = getRoundRectImgDataURL(1000,radiusRange.value,imgUrl);
 	for(var i = 0,len = sizeList.length;i<len;i++){
 
 		htmlLi 	+= '<li>'
@@ -141,8 +175,9 @@ function mackAndroidIcon(imgUrl){
 	}
 
 
+}
 
-	function getOriginImgDataURL (size,url){
+function getRoundRectImgDataURL (size,radius,url){
 		var img = new Image();
         img.src = url;
 
@@ -184,10 +219,9 @@ function mackAndroidIcon(imgUrl){
 
 		  return iconCanvas.toDataURL();
 
-		})(iconCanvas,0,0,size,size,120,img);
+		})(iconCanvas,0,0,size,size,radius,img);
 	}
 
-}
 
 
 // var testCtx = document.getElementById('test').getContext("2d");
