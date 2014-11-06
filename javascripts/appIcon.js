@@ -2,6 +2,7 @@ var appIconURL = '';
 var icons = [];
 var dragBox = document.getElementById('dragBox');
 var siteUrl = window.location.href.slice( 0, window.location.href.indexOf('/#'));
+var dl  = document.getElementById('dl');
 
 // zip.workerScriptsPath = siteUrl + "/javascripts/lib/";
 
@@ -95,8 +96,15 @@ function handleDragOver(evt) {
 
                    dragBox.innerHTML = img;
                    appIconURL = e.target.result;
+
+                    //remove disable
+                   dl.setAttribute('class','button-success pure-button');
+                   
                    mackIosIcon(appIconURL);
                    mackAndroidIcon(appIconURL);
+
+
+
 
 
                };
@@ -190,51 +198,50 @@ function mackAndroidIcon(imgUrl){
 }
 
 function getRoundRectImgDataURL (size,radius,url){
-		var img = new Image();
-        img.src = url;
+	var img = new Image();
+    img.src = url;
 
-		var iconCanvas = document.createElement('canvas'),
-			iconCanvasCtx = iconCanvas.getContext('2d');
+	var iconCanvas = document.createElement('canvas'),
+		iconCanvasCtx = iconCanvas.getContext('2d');
 
-		iconCanvas.width = size;
-		iconCanvas.height = size;
-		
+	iconCanvas.width = size;
+	iconCanvas.height = size;
+	
 
-		return (function roundRect(iconCanvas,x, y, w, h, radius , img) {
-		  var r = x + w;
-		  var b = y + h;
-		  var context = iconCanvas.getContext('2d');
+	return (function roundRect(iconCanvas,x, y, w, h, radius , img) {
+	  var r = x + w;
+	  var b = y + h;
+	  var context = iconCanvas.getContext('2d');
 
-		  context.save();
-		  context.beginPath();
-		  // context.strokeStyle="green";
-		  // context.lineWidth="4";
-		  context.moveTo(x+radius, y);
-		  context.lineTo(r-radius, y);
-		  context.quadraticCurveTo(r, y, r, y+radius);
-		  context.lineTo(r, y+h-radius);
-		  context.quadraticCurveTo(r, b, r-radius, b);
-		  context.lineTo(x+radius, b);
-		  context.quadraticCurveTo(x, b, x, b-radius);
-		  context.lineTo(x, y+radius);
-		  context.quadraticCurveTo(x, y, x+radius, y);
-		  // context.stroke();
+	  context.save();
+	  context.beginPath();
+	  // context.strokeStyle="green";
+	  // context.lineWidth="4";
+	  context.moveTo(x+radius, y);
+	  context.lineTo(r-radius, y);
+	  context.quadraticCurveTo(r, y, r, y+radius);
+	  context.lineTo(r, y+h-radius);
+	  context.quadraticCurveTo(r, b, r-radius, b);
+	  context.lineTo(x+radius, b);
+	  context.quadraticCurveTo(x, b, x, b-radius);
+	  context.lineTo(x, y+radius);
+	  context.quadraticCurveTo(x, y, x+radius, y);
+	  // context.stroke();
 
-		  context.closePath();
-		    // Clip to the current path
-		  context.clip();
+	  context.closePath();
+	    // Clip to the current path
+	  context.clip();
 
-		  context.drawImage(img, x, y,w,h);
-		    
-		    // Undo the clipping
-		  context.restore();
+	  context.drawImage(img, x, y,w,h);
+	    
+	    // Undo the clipping
+	  context.restore();
 
-		  return iconCanvas.toDataURL();
+	  return iconCanvas.toDataURL();
 
-		})(iconCanvas,0,0,size,size,radius,img);
-	}
+	})(iconCanvas,0,0,size,size,radius,img);
+}
 
-var dl  = document.getElementById('dl');
 dl.addEventListener('click',function(){
 	var zip = new JSZip();
 	var ios = zip.folder("ios");

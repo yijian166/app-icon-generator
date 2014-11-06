@@ -13,26 +13,42 @@
   </head>
 
   <body>
-       <div class="box">
-          <div class="drag-box" id="dragBox">
-            <p>Drag your application icon here, recommend bigger than 1500 × 1500</p>
-          </div>
-          <div class="icon-list">
-            <h2>ios</h2>
-            <ul id="iosIconList"></ul>
-          </div>
-          <div class="icon-list">
-            <h2>android</h2>
-            <ul id="androidIconList"></ul>
-          </div>
+    <div class="top"></div>
+    <h1 class="title">App Icon Generator</h1>
+    <div class="box">
+      <div class="drag-box">
+        <div class="drag" id="dragBox">
+          <p>Drag your icon here!<br><span>recommend bigger than 1500 × 1500<span></p>
+        </div>
+      </div>
+    
+
+      
+      <div class="icon-list">
+        <h2>iOS</h2>
+        <div class="list">
+          <ul id="iosIconList"></ul>
+        </div>
+      </div>
+      <div class="icon-list">
+        <h2>Android</h2>
+        <div class="list">
+          <ul id="androidIconList"></ul>
+        </div>
+      </div>
+      <div class="radius">
+        <img src="" data-src="/images/show.png"id="radiusShow" width="200" height="200">
+        <p>
+          <input type="range" id="radiusRange" min="0" max="500" value="120" >
+          <input type="number" id="radiusNum" class="num" value="1.20" step="0.01">
+        </p>
+      </div>
+      <div class="btn-box">
+        <button id="dl" class="button-success pure-button pure-button-disabled">down</button>
+      </div>
       </div>
 
-      <div class="radius">
-        <input type="range" id="radiusRange" min="0" max="500" value="120" >
-        <input type="number" id="radiusNum" value="1.20" step="0.01">
-        <img src="" data-src="/images/show.png"id="radiusShow" width="200" height="200">
-      </div>
-      <button id="dl">down</button>
+     
 
 
 
