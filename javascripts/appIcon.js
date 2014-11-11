@@ -130,6 +130,9 @@ function mackIosIcon(imgUrl){
 				 + '<img src="'
 				 + url
 				 + '" >'
+				 + '<p>'
+				 + sizeList[i] + 'x' + sizeList[i] + '.png'
+				 + '</p>'
 				 + '</li>';
 
 		icons.push({
@@ -172,6 +175,9 @@ function mackAndroidIcon(imgUrl){
 				 + '<img src="'
 				 + url
 				 + '" >'
+				 + '<p>'
+				 + sizeList[i] + 'x' + sizeList[i] + '.png'
+				 + '</p>'
 				 + '</li>';
 
 		icons.push({
